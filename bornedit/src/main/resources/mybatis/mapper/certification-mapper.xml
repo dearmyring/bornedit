@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="certification">
+
+	<insert id="insert" parameterType="CertificationDto">
+		insert into certification(certification_email, certification_serial, certification_when) 
+		values(#{certificationEmail}, #{certificationSerial}, sysdate)
+	</insert>
+	
+	<select id="check" parameterType="CertificationDto" resultType="CertificationDto">
+		select * from certification 
+		where 
+			certification_email = #{certificationEmail} 
+		and 
+			certification_serial = #{certificationSerial}
+		and
+			certification_when >= sysdate - 5/24/60
+	</select>
+	
+	<delete id="delete" parameterType="String">
+		delete certification where certification_email = #{certificationEmail}
+	</delete>
+	
+	<delete id="clear">
+		<![CDATA[
+			delete certification where certificaion_email < sysdate - 5/24/60
+		]]>
+	</delete>
+</mapper>
