@@ -19,7 +19,7 @@
 		<header>
 			<div class="container-1500">
 				<div class="header mt-0 w-100">
-					<div id="logo" class="">
+					<div class="logo">
 						<a href="${pageContext.request.contextPath}/">BORNEDIT</a>
 					</div>
 					<c:choose>

@@ -36,4 +36,11 @@ public class MemberDaoImpl implements MemberDao{
 	public MemberDto selectOndNick(String memberNick) {
 		return sqlSession.selectOne("member.getNick", memberNick);
 	}
+	
+	// 로그인 시각 갱신
+	@Override
+	public boolean updateLoginTime(String memberEmail) {
+		int result = sqlSession.update("member.updateLoginTime", memberEmail);
+		return result > 0;
+	}
 }
