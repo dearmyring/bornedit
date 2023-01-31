@@ -8,10 +8,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CertificationDto {
-	private String certificationEmail, certificationSerial;
-	private String certificationWhen;
+public class AttachmentDto {
+	private String attachmentName, attachmentType;
+	private int attachmentNo;
+	private long attachmentSize;
+	private Date attachmentWhen;
 }

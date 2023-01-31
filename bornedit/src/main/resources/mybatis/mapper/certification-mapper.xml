@@ -11,13 +11,13 @@
 	</insert>
 	
 	<select id="check" parameterType="CertificationDto" resultType="CertificationDto">
-		select * from certification 
-		where 
+		<![CDATA[
+			select * from certification 
+			where 
 			certification_email = #{certificationEmail} 
-		and 
-			certification_serial = #{certificationSerial}
-		and
-			certification_when >= sysdate - 5/24/60
+			and certification_serial = #{certificationSerial} 
+			and certification_when >= sysdate - 5/24/60
+		]]>
 	</select>
 	
 	<delete id="delete" parameterType="String">
@@ -26,7 +26,7 @@
 	
 	<delete id="clear">
 		<![CDATA[
-			delete certification where certificaion_email < sysdate - 5/24/60
+			delete certification where certification_email < sysdate - 5/24/60
 		]]>
 	</delete>
 </mapper>

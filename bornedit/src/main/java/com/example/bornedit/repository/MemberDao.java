@@ -11,5 +11,8 @@ public interface MemberDao {
 	MemberDto selectOndNick(String memberNick);
 	// 로그인 시각 갱신
 	boolean updateLoginTime(String memberEmail);
-	
+	// 비밀번호 변경
+	boolean editPw(MemberDto memberDto);
+	// 내 정보 변경
+	boolean editInfo(MemberDto memberDto);
 }

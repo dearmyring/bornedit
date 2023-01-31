@@ -18,9 +18,8 @@ public class CertificationDaoImpl implements CertificationDao{
 	}
 	
 	@Override
-	public boolean check(CertificationDto certDto) {
-		CertificationDto result = sqlSession.selectOne("certification.check", certDto);
-		return result != null;
+	public CertificationDto check(CertificationDto certDto) {
+		return sqlSession.selectOne("certification.check", certDto);
 	}
 	
 	@Override

@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CertificationDto {
-	private String certificationEmail, certificationSerial;
-	private String certificationWhen;
+public class BoradVideoDto {
+	private String memberEmail;
+	private int attachmentNo;
+	private Date uploadWhen;
 }

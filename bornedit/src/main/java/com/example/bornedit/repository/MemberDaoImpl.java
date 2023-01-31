@@ -19,7 +19,7 @@ public class MemberDaoImpl implements MemberDao{
 	// 비밀번호 암호화 & 회원가입
 	@Override
 	public void join(MemberDto memberDto) {
-		String memberPw = memberDto.getMemberNick();
+		String memberPw = memberDto.getMemberPw();
 		String enc = encoder.encode(memberPw);
 		memberDto.setMemberPw(enc);
 		sqlSession.insert("member.join", memberDto);
@@ -42,5 +42,23 @@ public class MemberDaoImpl implements MemberDao{
 	public boolean updateLoginTime(String memberEmail) {
 		int result = sqlSession.update("member.updateLoginTime", memberEmail);
 		return result > 0;
+	}
+	
+	@Override
+	public boolean editPw(MemberDto memberDto) {
+		String memberPw = memberDto.getMemberPw();
+		String enc = encoder.encode(memberPw);
+		memberDto.setMemberPw(enc);
+		int result = sqlSession.update("member.editPw", memberDto);
+		return result > 0;
+	}
+	
+	@Override
+	public boolean editInfo(MemberDto memberDto) {
+		String memberPw = memberDto.getMemberPw();
+		String enc = encoder.encode(memberPw);
+		memberDto.setMemberPw(enc);
+		int count = sqlSession.update("member.editInfo", memberDto);
+		return count > 0;
 	}
 }

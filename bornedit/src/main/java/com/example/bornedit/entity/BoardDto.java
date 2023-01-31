@@ -7,11 +7,12 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class CertificationDto {
-	private String certificationEmail, certificationSerial;
-	private String certificationWhen;
+public class BoardDto {
+	private String memberEmail, boardTitle, mainBody, boardContent;
+	private int boardNo,boardLike, howManyEmployee, boardSave, boardView;
+	private Date boardWhen, boardPut;
 }

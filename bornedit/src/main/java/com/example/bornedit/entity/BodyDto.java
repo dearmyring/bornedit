@@ -1,17 +1,15 @@
 package com.example.bornedit.entity;
 
-import java.sql.Date;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Builder
-public class CertificationDto {
-	private String certificationEmail, certificationSerial;
-	private String certificationWhen;
+public class BodyDto {
+	private int bodyNo, boardNo;
+	private String bodyName;
 }

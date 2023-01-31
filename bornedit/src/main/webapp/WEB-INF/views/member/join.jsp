@@ -23,10 +23,11 @@
 							<option value="direct">직접 입력</option>
 						</select>
 					</div>
-				<input class="origin-send-email" name="memberEmail" value="" hidden="hidden">
-				<button class="w-100 mt-10 send-btn cursor-pointer" type="button" disabled>이메일 인증</button>
+				<input class="origin-send-email" name="memberEmail" value="" hidden>
+				<button class="w-100 mt-10 send-btn cursor-pointer btn cert-serial" type="button" disabled>이메일 인증</button>
 				<div class="mt-5 help-text"></div>
-				<div class="cert"></div>
+				<input class="input w-100 mt-5 confirm confirm-input" placeholder="인증번호를 입력하세요" autocomplete="off">
+				<button class="btn w-100 mt-10 cursor-pointer btn-positive confirm confirm-serial" type="button">번호 확인</button>
 			</div>
 			<div class="mt-40">
 				<div class="mt-30 mb-10"><h3>비밀번호</h3></div>
@@ -97,9 +98,9 @@
 				const emailRear = $(".select-email").val();
 				$("input[name=memberEmail]").attr("value", emailFront + "@" + emailRear);
 				if(emailFront.length > 0) {
-					$(".send-btn").prop("disabled", false).addClass("cursor-pointer activation");
+					$(".send-btn").prop("disabled", false).addClass("cursor-pointer btn-positive");
 				} else {
-					$(".send-btn").prop("disabled", true).removeClass("cursor-pointer activation");
+					$(".send-btn").prop("disabled", true).removeClass("cursor-pointer btn-positive");
 				}
 			})
 			
@@ -121,13 +122,13 @@
 				const emailRear = $(".direct-email").val();
 				$("input[name=memberEmail]").attr("value", emailFront + "@" + emailRear);
 				if(emailFront.length > 0) {
-					$(".send-btn").prop("disabled", false).addClass("cursor-pointer activation");
+					$(".send-btn").prop("disabled", false).addClass("cursor-pointer btn-positive");
 				} else {
-					$(".send-btn").prop("disabled", true).removeClass("cursor-pointer activation");
+					$(".send-btn").prop("disabled", true).removeClass("cursor-pointer btn-positive");
 				}
 			})
 			
-			// 이메일 입력 후 인증 버튼 누를시 중복검사 && 인증번호 전송 && 인증번호 검사
+			// 이메일 입력 후 인증 버튼 누를시 중복검사 && 인증번호 전송
 			$(".send-btn").click(function(){
 				const memberEmail = $("input[name=memberEmail]").val();
 				const btn = $(this);
@@ -138,42 +139,55 @@
 						if(resp == "NNNNN") {
 							btn.prop("disabled", true);
 							$("input[name=memberEmail]").next("button").next("div").text("이미 사용중인 이메일입니다.");
-						} else {
+						} 
+						else {
 							$("input[name=memberEmail]").next("button").next("div").text("");
 							$.ajax({
-								url:"${pageContext.request.contextPath}/member/send-email",
+								url:"${pageContext.request.contextPath}/rest/member/send_email",
 								method: "post",
 								data: {certificationEmail : memberEmail},
 								success: function() {
-									var div = $("<div>")
-									var input = $("<input>").attr("placeholder", "인증번호를 입력하세요.").addClass("input w-100 mt-10");
-									var button = $("<button>").attr("type", "button").text("번호 확인").addClass("btn w-100 mt-10 cursor-pointer activation");
-									
-									button.click(function(){
-										var memberSerial = input.val();
-										$.ajax({
-											url:"${pageContext.request.contextPath}/member/confirm_email",
-											method:"post",
-											data:{
-												certificationEmail : memberEmail,
-												certificationSerial : memberSerial
-											},
-											success:function(){
-												validChecking.memberEmailValid = true;
-												btn.text("인증 완료").removeClass("cursor-pointer activation");
-												button.remove();
-												input.remove()
-												btn.prop("disabled", true);
-											}
-										});
-									});
-									div.append(input).append(button);
-									$(".cert").html(div);
+		    						$(".input-email").attr("readonly", "readonly");
+		    						btn.css("display", "none");
+		    						$(".confirm").css("display", "inline-block")
 								}
 							})
 						}
 					}
 				})
+			});
+			
+			// 인증번호 검사
+			$(".confirm-serial").click(function(){
+				$("input[name=memberEmail]").next("button").next("div").text("");
+				const memberEmail = $("input[name=memberEmail]").val();
+				const memberSerial = $(".confirm-input").val();
+				const btn = $(this);
+				if(memberSerial.length != 6) {
+					$("input[name=memberEmail]").next("button").next("div").text("인증번호를 확인하세요.");
+				} else {
+					$("input[name=memberEmail]").next("button").next("div").text("");
+					$.ajax({
+						url:"${pageContext.request.contextPath}/rest/member/confirm_email",
+						method:"get",
+						data:{
+							certificationEmail : memberEmail,
+							certificationSerial : memberSerial
+						},
+						success:function(resp){
+							if(resp == "NNNNY") {
+								validChecking.memberEmailValid = true;
+								btn.text("인증 완료").removeClass("cursor-pointer btn-positive");
+								$(".confirm-input").remove();
+								$(".input-email").attr("readonly", "readonly");
+								btn.attr("disabled", true);
+							} else {
+								validChecking.memberEmailValid = false;
+								$("input[name=memberEmail]").next("button").next("div").text("인증번호를 확인하세요.");
+							}
+						}
+					});
+				};
 			});
 		     
 			// 비밀번호 정규식 검사

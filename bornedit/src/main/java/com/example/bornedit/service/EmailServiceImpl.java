@@ -35,14 +35,4 @@ public class EmailServiceImpl implements EmailService{
 		CertificationDto certDto = CertificationDto.builder().certificationEmail(email).certificationSerial(serial).build();
 		certificationDao.insert(certDto);
 	}
-	
-	@Override
-	public boolean checkCert(CertificationDto certDto) {
-		if(certificationDao.check(certDto)) {
-			certificationDao.delete(certDto.getCertificationEmail());
-			return true;
-		}	
-			return false;
-	}
-	
 }

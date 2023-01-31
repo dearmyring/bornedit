@@ -12,7 +12,7 @@
 	</insert>
 	
 	<select id="getEmail" parameterType="String" resultType="MemberDto">
-		select member_email from member where member_email = #{memberEmail}
+		select * from member where member_email = #{memberEmail}
 	</select>
 	
 	<select id="getNick" parameterType="String" resultType="MemberDto">
@@ -21,5 +21,19 @@
 	
 	<update id="updateLoginTime" parameterType="String">
 		update member set when_login = sysdate where member_email = #{memberEmail}
+	</update>
+	
+	<update id="editPw" parameterType="MemberDto">
+		update member set member_pw = #{memberPw} where member_email = #{memberEmail}
+	</update>
+	
+	<update id="editInfo" parameterType="MemberDto">
+		update member set 
+			member_pw = #{memberPw}, 
+			member_nick = #{memberNick}, 
+			member_introduce = #{memberIntroduce}, 
+			member_offer = #{memberOffer}
+		where 
+			member_email = #{memberEmail}
 	</update>
 </mapper>
