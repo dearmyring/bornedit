@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="board">
+
+	<select id="sequence" resultType="int">
+		select board_seq.nextval from dual
+	</select>
+	
+	<insert id="write" parameterType="BoardDto">
+		insert into board
+			(board_no, board_email, board_title, main_body, how_many_employee, board_content)
+		values
+			(#{boardNo}, #{boardEmail}, #{boardTitle}, #{mainBody}, #{howManyEmployee}, #{boardContent})
+	</insert>
+	
+</mapper>

@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class BoradVideoDto {
-	private String memberEmail;
-	private int attachmentNo;
+	private int attachmentNo, boardNo;
 	private Date uploadWhen;
 }

@@ -14,9 +14,13 @@ public class AttachmentDaoImpl implements AttachmentDao{
 	
 	// 첨부파일 부모테이블 메서드
 	@Override
+	public int sequence() {
+		return sqlSession.selectOne("attachment.sequence");
+	}
+	
+	@Override
 	public void uploadFile(AttachmentDto attachmentDto) {
 		sqlSession.insert("attachment.uploadFile", attachmentDto);
-		
 	}
 	
 	@Override
@@ -24,10 +28,6 @@ public class AttachmentDaoImpl implements AttachmentDao{
 		return sqlSession.selectOne("attachment.findFile", attachmentNo);
 	}
 	
-	@Override
-	public int sequence() {
-		return sqlSession.selectOne("attachment.sequence");
-	}
 	
 	// 첨부파일 하위테이블(프로필이미지) 메서드
 	@Override

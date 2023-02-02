@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="right">
+
+	<select id="sequence" resultType="int">
+		select right_seq.nextval from dual
+	</select>
+	
+	<insert id="write" parameterType="RightDto">
+		insert into right
+			(right_no, board_no, right_name)
+		values
+			(#{rightNo}, #{boardNo}, #{rightName})
+	</insert>
+	
+</mapper>

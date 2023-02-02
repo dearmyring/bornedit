@@ -1,5 +1,8 @@
 package com.example.bornedit.repository;
 
-public interface BoardDao {
+import com.example.bornedit.entity.BoardDto;
 
+public interface BoardDao {
+	int sequence();
+	void write(BoardDto boardDto);
 }
