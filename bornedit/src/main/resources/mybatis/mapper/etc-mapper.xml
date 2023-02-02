@@ -10,7 +10,7 @@
 	</select>
 	
 	<insert id="write" parameterType="EtcDto">
-		insert into right
+		insert into etc
 			(etc_no, board_no, etc_name)
 		values
 			(#{etcNo}, #{boardNo}, #{etcName})

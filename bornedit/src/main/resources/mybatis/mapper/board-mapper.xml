@@ -11,9 +11,9 @@
 	
 	<insert id="write" parameterType="BoardDto">
 		insert into board
-			(board_no, board_email, board_title, main_body, how_many_employee, board_content)
+			(board_no, member_email, board_title, main_body, how_many_employee, board_content)
 		values
-			(#{boardNo}, #{boardEmail}, #{boardTitle}, #{mainBody}, #{howManyEmployee}, #{boardContent})
+			(#{boardNo}, #{memberEmail}, #{boardTitle}, #{mainBody}, #{howManyEmployee}, #{boardContent})
 	</insert>
 	
 </mapper>

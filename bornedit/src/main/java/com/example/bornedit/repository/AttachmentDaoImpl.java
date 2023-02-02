@@ -28,7 +28,6 @@ public class AttachmentDaoImpl implements AttachmentDao{
 		return sqlSession.selectOne("attachment.findFile", attachmentNo);
 	}
 	
-	
 	// 첨부파일 하위테이블(프로필이미지) 메서드
 	@Override
 	public void addProfileImg(ProfileImgDto profileDto) {

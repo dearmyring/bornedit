@@ -11,7 +11,7 @@
 	
 	<insert id="write" parameterType="TripodDto">
 		insert into tripod
-			(tripod_no, board_no, lens_name)
+			(tripod_no, board_no, tripod_name)
 		values
 			(#{tripodNo}, #{boardNo}, #{tripodName})
 	</insert>
