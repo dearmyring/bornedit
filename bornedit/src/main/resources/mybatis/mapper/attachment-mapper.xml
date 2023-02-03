@@ -11,8 +11,8 @@
 	</select>
 
 	<insert id="uploadFile" parameterType="AttachmentDto">
-		insert into 
-			attachment(attachment_no, attachment_name, attachment_size, attachment_type)
+		insert into attachment
+			(attachment_no, attachment_name, attachment_size, attachment_type)
 		values
 			(#{attachmentNo}, #{attachmentName}, #{attachmentSize}, #{attachmentType})
 	</insert>
@@ -23,9 +23,10 @@
 	
 	<!-- 첨부파일 하위 테이블(프로필 이미지) -->
 	<insert id="addProfileImg" parameterType="ProfileImgDto">
-		insert into 
-			profile_img(member_email, attachment_no)
-		values(#{memberEmail}, #{attachmentNo})
+		insert into profile_img
+			(member_email, attachment_no)
+		values
+			(#{memberEmail}, #{attachmentNo})
 	</insert>
 	
 	<select id="selectProfileImg" parameterType="String" resultType="ProfileImgDto">
@@ -40,9 +41,12 @@
 		delete profile_img where member_email = #{memberEmail}
 	</delete>
 	
-	
-	
-	
-	
+	<!-- 첨부파일 하위 테이블(업로드 비디오) -->
+	<insert id="addVideo" parameterType="BoardVideoDto">
+		insert into board_video
+			(board_no, attachment_no)
+		values
+			(#{boardNo}, #{attachmentNo})
+	</insert>
 	
 </mapper>

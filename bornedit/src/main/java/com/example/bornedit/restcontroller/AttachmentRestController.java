@@ -24,8 +24,10 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.bornedit.constant.SessionConstant;
 import com.example.bornedit.entity.AttachmentDto;
+import com.example.bornedit.entity.BoardVideoDto;
 import com.example.bornedit.entity.ProfileImgDto;
 import com.example.bornedit.repository.AttachmentDao;
+import com.example.bornedit.repository.BoardDao;
 
 @RestController
 @RequestMapping("/rest")
@@ -35,6 +37,9 @@ public class AttachmentRestController {
 	
 	@Autowired
 	private AttachmentDao attachmentDao;
+	
+	@Autowired
+	private BoardDao boardDao;
 	
 	@PostMapping("/upload")
 	public String upload(@RequestParam MultipartFile attach) throws IllegalStateException, IOException {
@@ -61,6 +66,7 @@ public class AttachmentRestController {
 	@GetMapping("/download/{attachmentNo}")
 	public ResponseEntity<ByteArrayResource> download(
 												@PathVariable int attachmentNo) throws IOException {
+		
 		AttachmentDto attachmentDto = attachmentDao.findFile(attachmentNo);
 		if(attachmentDto == null) {
 			throw new IllegalArgumentException();
@@ -124,4 +130,5 @@ public class AttachmentRestController {
 	public boolean deleteImgNo(@PathVariable String memberEmail) {
 		return attachmentDao.deleteProfileImg(memberEmail);
 	}
+
 }

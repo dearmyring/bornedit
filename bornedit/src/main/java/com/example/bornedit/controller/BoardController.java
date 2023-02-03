@@ -6,21 +6,25 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.bornedit.constant.SessionConstant;
 import com.example.bornedit.entity.AudioDto;
 import com.example.bornedit.entity.BoardDto;
+import com.example.bornedit.entity.BoardVideoDto;
 import com.example.bornedit.entity.BodyDto;
 import com.example.bornedit.entity.EtcDto;
 import com.example.bornedit.entity.LensDto;
 import com.example.bornedit.entity.MonitorDto;
 import com.example.bornedit.entity.RightDto;
 import com.example.bornedit.entity.TripodDto;
+import com.example.bornedit.repository.AttachmentDao;
 import com.example.bornedit.repository.AudioDao;
 import com.example.bornedit.repository.BoardDao;
 import com.example.bornedit.repository.BodyDao;
@@ -59,6 +63,10 @@ public class BoardController {
 	@Autowired
 	private EtcDao etcDao;
 	
+	@Autowired
+	private AttachmentDao attachmentDao;
+	
+	
 	@GetMapping("/write")
 	public String write() {
 		return "board/write";
@@ -74,22 +82,20 @@ public class BoardController {
 			@RequestParam List<String> monitorName,
 			@RequestParam List<String> rightName,
 			@RequestParam List<String> etcName,
-			HttpSession session
+			@RequestParam int attachmentNo,
+			HttpSession session, RedirectAttributes attr
 			) {
 		int boardNo = boardDao.sequence();
 		String memberId = (String) session.getAttribute(SessionConstant.ID);
 		boardDto.setBoardNo(boardNo);
 		boardDto.setMemberEmail(memberId);
+		
 		boardDao.write(boardDto);
 		
-		System.out.println(boardDto);
-		System.out.println(bodyName.size());
-		System.out.println(lensName.size());
-		System.out.println(tripodName.size());
-		System.out.println(audioName.size());
-		System.out.println(monitorName.size());
-		System.out.println(rightName.size());
-		System.out.println(etcName.size());
+		attachmentDao.addVideo(BoardVideoDto.builder()
+				.boardNo(boardNo)
+				.attachmentNo(attachmentNo)
+				.build());
 		
 		for(int i = 0; i < bodyName.size(); i++) {
 			int bodyNo = bodyDao.sequence();
@@ -133,6 +139,13 @@ public class BoardController {
 			etcDao.write(etcDto);
 		}
 		
-		return "home";
+		attr.addAttribute("boardNo", boardNo);
+		return "redirect:detail";
 	}
+	
+	@GetMapping("/detail")
+	public String detail(@RequestParam int boardNo, Model model, HttpSession session) {
+		return "board/detail";
+	}
+	
 }

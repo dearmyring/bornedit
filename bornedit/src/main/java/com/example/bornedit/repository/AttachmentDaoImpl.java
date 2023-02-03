@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.bornedit.entity.AttachmentDto;
+import com.example.bornedit.entity.BoardVideoDto;
 import com.example.bornedit.entity.ProfileImgDto;
 
 @Repository
@@ -49,5 +50,11 @@ public class AttachmentDaoImpl implements AttachmentDao{
 	public boolean deleteProfileImg(String memberEmail) {
 		int result = sqlSession.delete("attachment.deleteProfileImg", memberEmail);
 		return result > 0;
+	}
+	
+	// 첨부파일 하위테이블(비디오 업로드) 메서드
+	@Override
+	public void addVideo(BoardVideoDto boardVideoDto) {
+		sqlSession.insert("attachment.addVideo", boardVideoDto);
 	}
 }
