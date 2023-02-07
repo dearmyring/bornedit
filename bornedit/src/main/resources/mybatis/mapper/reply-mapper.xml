@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="reply">
+	<select id="selectOne" parameterType="int" resultType="ReplyVO">
+		select 
+		    R.reply_no,
+		    R.board_no,
+		    R.reply_content,
+		    to_char(R.reply_when, 'YYYY-MM-DD HH24:MI') as reply_when,
+		    P.attachment_no,
+		    M.member_nick
+		from 
+		    reply R left outer join profile_img P 
+		on R.member_email = P.member_email
+		    inner join member M
+		on R.member_email = M.member_email where board_no = #{boardNo}
+		order by 
+			reply_no asc
+	</select>
+	
+	<insert id="write" parameterType="ReplyDto">
+		insert into reply
+		    (reply_no, board_no, member_email, reply_content)
+		values
+		    (reply_seq.nextval, #{boardNo}, #{memberEmail}, #{replyContent})
+	</insert>
+	
+	<select id="count" parameterType="int" resultType="ReplyCountVO">
+		select count(reply_no) as cnt from reply where board_no = #{boardNo}
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete reply where reply_no = #{replyNo}
+	</delete>
+	
+</mapper>

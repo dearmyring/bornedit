@@ -16,4 +16,123 @@
 			(#{boardNo}, #{memberEmail}, #{boardTitle}, #{mainBody}, #{howManyEmployee}, #{boardContent})
 	</insert>
 	
+	<select id="selectOneBoard" parameterType="int" resultType="BoardDto">
+		select * from board where board_no = #{boardNo} 
+	</select>
+	
+	<!-- 하위 테이블 계층형 조회 단일 쿼리문 -->
+	<select id="bodyDetail" parameterType="int" resultType="BodyDto">
+		select * from body where board_no = #{boardNo}
+	</select>
+	
+	<select id="lensDetail" parameterType="int" resultType="LensDto">
+		select * from lens where board_no = #{boardNo}
+	</select>
+	
+	<select id="rightDetail" parameterType="int" resultType="RightDto">
+		select * from right where board_no = #{boardNo}
+	</select>
+	
+	<select id="tripodDetail" parameterType="int" resultType="TripodDto">
+		select * from tripod where board_no = #{boardNo}
+	</select>
+	
+	<select id="audioDetail" parameterType="int" resultType="AudioDto">
+		select * from audio where board_no = #{boardNo}
+	</select>
+	
+	<select id="monitorDetail" parameterType="int" resultType="MonitorDto">
+		select * from monitor where board_no = #{boardNo}
+	</select>
+	
+	<select id="etcDetail" parameterType="int" resultType="EtcDto">
+		select * from etc where board_no = #{boardNo}
+	</select>
+	
+	<select id="boardVideoDetail" parameterType="int" resultType="BoardVideoDto">
+		select * from board_video where board_no = #{boardNo}
+	</select>
+	
+	<resultMap type="BoardDetailVO" id="boardDetail">
+		<association property="boardDetail">
+			<result column="board_no" property="boardNo"/>
+			<result column="member_email" property="memberEmail"/>
+			<result column="board_title" property="boardTitle"/>
+			<result column="main_body" property="mainBody"/>
+			<result column="how_many_employee" property="howManyEmployee"/>
+			<result column="board_content" property="boardContent"/>
+			<result column="board_like" property="boardLike"/>
+			<result column="board_save" property="boardSave"/>
+			<result column="board_view" property="boardView"/>
+			<result column="board_when" property="boardWhen"/>
+			<result column="board_put" property="boardPut"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="member_offer" property="memberOffer"/>
+			<result column="attachment_no" property="attachmentNo"/>
+		</association>
+		
+		<collection property="bodyDetail" javaType="java.util.List" ofType="BodyDto" column="board_no" select="bodyDetail">
+			<result column="body_no" property="bodyNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="body_name" property="bodyName"/>
+		</collection>
+		
+		<collection property="lensDetail" javaType="java.util.List" ofType="LensDto" column="board_no" select="lensDetail">
+			<result column="lens_no" property="lensNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="lens_name" property="lensName"/>
+		</collection>
+		
+		<collection property="rightDetail" javaType="java.util.List" ofType="RightDto" column="board_no" select="rightDetail">
+			<result column="right_no" property="rightNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="right_name" property="rightName"/>
+		</collection>
+		
+		<collection property="tripodDetail" javaType="java.util.List" ofType="TripodDto" column="board_no" select="tripodDetail">
+			<result column="tripod_no" property="tripodNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="tripod_name" property="tripodName"/>
+		</collection>
+		
+		<collection property="audioDetail" javaType="java.util.List" ofType="AudioDto" column="board_no" select="audioDetail">
+			<result column="audio_no" property="audioNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="audio_name" property="audioName"/>
+		</collection>
+		
+		<collection property="monitorDetail" javaType="java.util.List" ofType="MonitorDto" column="board_no" select="monitorDetail">
+			<result column="monitor_no" property="monitorNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="monitor_name" property="monitorName"/>
+		</collection>
+		
+		<collection property="etcDetail" javaType="java.util.List" ofType="EtcDto" column="board_no" select="etcDetail">
+			<result column="etc_no" property="etcNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="etc_name" property="etcName"/>
+		</collection>
+		
+		<collection property="boardVideoDetail" javaType="BoardVideoDto" ofType="BoardVideoDto" column="board_no" select="boardVideoDetail">
+			<result column="board_no" property="boardNo"/>
+			<result column="attachment_no" property="attachmentNo"/>
+			<result column="upload_when" property="uploadWhen"/>
+		</collection>
+	</resultMap>
+	
+	<select id="boardDetailMain" parameterType="int" resultMap="boardDetail">
+		select 
+			B.*,
+			M.member_nick,
+			M.member_offer,
+			P.attachment_no
+		from
+			board B inner join member M 
+				on B.member_email = M.member_email 
+			left outer join profile_img P 
+				on B.member_email = P.member_email 
+			where 
+				B.board_no = #{boardNo}
+	</select>
+	
 </mapper>

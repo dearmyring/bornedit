@@ -31,6 +31,7 @@ import com.example.bornedit.repository.BodyDao;
 import com.example.bornedit.repository.EtcDao;
 import com.example.bornedit.repository.LensDao;
 import com.example.bornedit.repository.MonitorDao;
+import com.example.bornedit.repository.ReplyDao;
 import com.example.bornedit.repository.RightDao;
 import com.example.bornedit.repository.TripodDao;
 
@@ -65,6 +66,9 @@ public class BoardController {
 	
 	@Autowired
 	private AttachmentDao attachmentDao;
+	
+	@Autowired
+	private ReplyDao replyDao;
 	
 	
 	@GetMapping("/write")
@@ -145,7 +149,11 @@ public class BoardController {
 	
 	@GetMapping("/detail")
 	public String detail(@RequestParam int boardNo, Model model, HttpSession session) {
-		return "board/detail";
+		model.addAttribute("replyDto", replyDao.selectReply(boardNo));
+		model.addAttribute("selectOneBoard", boardDao.selectOneBoard(boardNo));
+		model.addAttribute("boardDto", boardDao.detail(boardNo));
+		return "board/detail2";
 	}
+	
 	
 }

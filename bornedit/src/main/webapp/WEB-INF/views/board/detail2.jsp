@@ -139,8 +139,7 @@
 								<img class="header-profile-img">
 							</div>
 							<div class="w-100" style="display: flex; justify-content: space-between;">
-								<input name="boardNo" value="${selectOneBoard.boardNo}" type="hidden" readonly>
-								<input name="replyContent" class="w-85 ms-30 reply-input" placeholder="작성하실 댓글을 입력하세요.">
+								<input name="replyContent" class="w-85 ms-30 reply-input" placeholder="작성하실 댓글을 입력하세요." autocomplete="off">
 								<button type="button" class="ms-30 btn reply-add-btn btn-positive">등록</button>
 								<button type="button" class="btn reply-delete-btn">취소</button>
 							</div>
@@ -152,44 +151,14 @@
 								<img class="detail-profile-img" src="${contextPage.request.contextPath}/image/basicProfileImage.png">
 							</div>
 							<div class="w-100" style="display: flex; justify-content: space-between;">
-								<input name="boardNo" value="${selectOneBoard.boardNo}" type="hidden" readonly>
 								<input name="replyContent" class="w-85 ms-30 reply-input" placeholder="로그인 후 댓글을 입력하세요." readonly>
-								<button type="button" class="ms-30 btn reply-add-btn btn-positive" disabled>등록</button>
-								<button type="button" class="btn reply-delete-btn" disabled>취소</button>
 							</div>
 						</div>
 					</c:otherwise>
 				</c:choose>
+				<input name="boardNo" value="${selectOneBoard.boardNo}" type="hidden" readonly>
 				<div class="reply-list">
-					<c:forEach var="replyDto" items="${replyDto}">
-						<div class="flex-parent mt-30">
-							<div class="inline-block profile-box">
-								<c:choose>
-									<c:when test="${replyDto.attachmentNo > 0}">
-										<img class="detail-profile-img" src="${contextPage.request.contextPath}/rest/download/${replyDto.attachmentNo}">	
-									</c:when>
-									<c:otherwise>
-										<img class="detail-profile-img" src="${contextPage.request.contextPath}/image/basicProfileImage.png">
-									</c:otherwise>
-								</c:choose>
-							</div>
-							<div class="flex-col">
-								<div class="ms-10 mb-5">
-									<span class="font-15 reply-nick me-5">{{memberNick}}</span>
-									<span class="font-12 reply-when" style="color:#757575;">replyWhen</span>
-								</div>
-								<div class="inline-block font-18 ms-10 reply-content">
-									replyContent
-								</div>
-							</div>
-							<c:if test="${replyDto.memberNick == loginNick}">
-								<div class="text-right font-15">
-									<span class="cursor-pointer me-5">수정</span>
-									<span class="cursor-pointer">삭제</span>
-								</div>
-							</c:if>
-						</div>
-					</c:forEach>
+					<!-- jQuery로 댓글 목록이 추가될 영역 -->
 				</div>
 			</div>
 		</div>
@@ -240,20 +209,41 @@
 			});
 			
 			function replyListLoad() {
+				$(".reply-list").empty();
 				const boardNo = $("input[name=boardNo]").val();
 				$.ajax({
-					url:"${contextPage.request.contextPath}/rest/reply/list/" + boardNo,
+					url:"${contextPage.request.contextPath}/rest/reply/list/"+ boardNo,
 					method:"get",
 					success:function(resp){
 						for(var i = 0; i < resp.length; i++) {
-							var img = $(".profile-box").text();
-							var nick = $(".reply-nick").text();
-							var when = $(".reply-when").text();
-							var content = $(".reply.content").text();
-							nick = nick.replace("{{memberNick}}", resp[i].memberNick);
-							console.log(nick);
+							const div1 = $("<div>").addClass("flex-parent mt-30");
+							const div2 = $("<div>").addClass("inline-block profile-box");
+							if(resp[i].attachmentNo > 0) {
+								var img = $("<img>").addClass("reply-profile-img").attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].attachmentNo);
+							} else {
+								var img = $("<img>").addClass("reply-profile-img").attr("src", "${contextPage.request.contextPath}/image/basicProfileImage.png");
+							}
+							const replyMemberProfile = div2.append(img);
+							const div3 = $("<div>").addClass("flex-col");
+							const div4 = $("<div>").addClass("ms-10 mb-5");
+							const nick = $("<span>").addClass("font-15 reply-nick me-5").text(resp[i].memberNick);
+							const when = $("<span>").addClass("font-12 reply-when").css("color", "#757575").text(resp[i].replyWhen);
+							const content = $("<div>").addClass("inline-block font-18 ms-10 reply-content").text(resp[i].replyContent);
+							const div5 = div4.append(nick).append(when);
+							const NickWhenContent = div3.append(div5).append(content);
+							const div6 = div1.append(replyMemberProfile).append(NickWhenContent);
+							const replyNo = $("<input>").val(resp[i].replyNo).addClass("reply-no").attr("type", "hidden");
+							$(".reply-list").append(div6);
 							replyCount();
-						}
+							
+							if(resp[i].memberNick == "${loginNick}") {
+								const div7 = $("<div>").addClass("text-right font-15");
+								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit").text("수정");
+								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete").text("삭제");
+								const div8 = div7.append(replyEdit).append(replyDelete).append(replyNo);
+								const div9 = div1.append(div8);
+							}
+						};
 					}
 				});
 			}
@@ -261,13 +251,26 @@
 			function replyCount() {
 				const boardNo = $("input[name=boardNo]").val();
 				$.ajax({
-					url:"${contextPage.request.contextPath}/rest/reply/count/"+ boardNo,
+					url:"${contextPage.request.contextPath}/rest/reply/count/" + boardNo,
 					method:"get",
 					success: function(resp) {
 						$(".reply-count").text(resp.cnt);
 					}
 				});
 			}
+			
+	          $(document).on("click", ".reply-delete", function() {
+	              const replyNo = $(this).next("input").val();
+	              console.log(replyNo);
+	              $.ajax({
+	            	 url:"${contextPage.request.contextPath}/rest/reply/delete/" + replyNo,
+	            	 method:"delete",
+	            	 success: function(){
+	            		 replyListLoad();
+	            	 }
+	              });
+	          });
+			
 		});
 	</script>	
 </body>
