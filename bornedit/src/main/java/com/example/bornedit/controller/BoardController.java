@@ -1,6 +1,8 @@
 package com.example.bornedit.controller;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.servlet.http.HttpSession;
 
@@ -148,7 +150,21 @@ public class BoardController {
 	}
 	
 	@GetMapping("/detail")
-	public String detail(@RequestParam int boardNo, Model model, HttpSession session) {
+	public String detail(
+			@RequestParam int boardNo, 
+			Model model, 
+			HttpSession session) {
+		@SuppressWarnings("unchecked")
+		Set<Integer> history = (Set<Integer>) session.getAttribute("history");
+		
+		if(history == null) {
+			history = new HashSet<>();
+		}
+		
+		if(history.add(boardNo)) {
+			boardDao.incrementViewCount(boardNo);
+		}
+		session.setAttribute("history", history);
 		model.addAttribute("replyDto", replyDao.selectReply(boardNo));
 		model.addAttribute("selectOneBoard", boardDao.selectOneBoard(boardNo));
 		model.addAttribute("boardDto", boardDao.detail(boardNo));

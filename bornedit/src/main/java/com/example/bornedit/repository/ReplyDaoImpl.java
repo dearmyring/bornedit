@@ -35,4 +35,10 @@ public class ReplyDaoImpl implements ReplyDao{
 		int count = sqlSession.delete("reply.delete", replyNo);
 		return count > 0;
 	}
+	
+	@Override
+	public boolean edit(ReplyDto replyDto) {
+		int result = sqlSession.update("reply.edit", replyDto);
+		return result > 1;
+	}
 }

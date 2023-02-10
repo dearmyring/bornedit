@@ -11,4 +11,5 @@ public interface ReplyDao {
 	ReplyCountVO count(int boardNo);
 	void write(ReplyDto replyDto);
 	boolean delete(int replyNo);
+	boolean edit(ReplyDto replyDto);
 }

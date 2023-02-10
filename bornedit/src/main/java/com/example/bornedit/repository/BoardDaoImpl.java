@@ -34,4 +34,34 @@ public class BoardDaoImpl implements BoardDao{
 	public List<BoardDetailVO> detail(int boardNo) {
 		return sqlSession.selectList("board.boardDetailMain", boardNo);
 	}
+	
+	@Override
+	public boolean incrementViewCount(int boardNo) {
+		int result = sqlSession.update("board.incrementViewCount", boardNo);
+		return result > 0;
+	}
+	
+	@Override
+	public boolean decrementLikeCount(int boardNo) {
+		int result = sqlSession.update("board.decrementLikeCount", boardNo);
+		return result > 0;
+	}
+	
+	@Override
+	public boolean incrementLikeCount(int boardNo) {
+		int result = sqlSession.update("board.incrementLikeCount", boardNo);
+		return result > 0;
+	}
+	
+	@Override
+	public boolean decrementSaveCount(int boardNo) {
+		int result = sqlSession.update("board.decrementSaveCount", boardNo);
+		return result > 0;
+	}
+	
+	@Override
+	public boolean incrementSaveCount(int boardNo) {
+		int result = sqlSession.update("board.incrementSaveCount", boardNo);
+		return result > 0;
+	}
 }

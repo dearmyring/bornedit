@@ -36,4 +36,7 @@
 		delete reply where reply_no = #{replyNo}
 	</delete>
 	
+	<update id="edit" parameterType="ReplyDto">
+		update reply set reply_content = #{replyContent} where reply_no = #{replyNo} and member_email = #{memberEmail}
+	</update>
 </mapper>

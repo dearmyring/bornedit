@@ -15,6 +15,8 @@
 				</div>
 				<div class="mt-30">
 					<h1>${content.boardDetail.boardTitle}</h1>
+					<c:if test="${loginId == content.boardDetail.memberEmail}">
+					</c:if>
 				</div>
 				<div class="flex-parent mt-30">
 					<div class="inline-block profile-box">
@@ -166,25 +168,41 @@
 		<div class="left like-save-box" style="display: flex; justify-content: center;">
 			<div class="flex-col" style="justify-content: space-around;">
 				<div class="heart-box" style="display: flex; justify-content: center; align-items: center;">
-					<i class="font-30 fa-regular fa-heart" style="color: #757575"></i>
+					<i class="font-30 fa-regular fa-heart cursor-pointer like-btn" style="color: #757575"></i>
 				</div>
 				<div class="like-count text-center font-15">
-					0	
+					
 				</div>
 				<div class="save-box" style="display: flex; justify-content: center; align-items: center;">
-					<i class="font-30 fa-regular fa-bookmark" style="color: #757575"></i>				
+					<i class="font-30 fa-regular fa-bookmark cursor-pointer save-btn" style="color: #757575"></i>				
 				</div>
+			</div>
+		</div>
+		
+		
+		<div id="reply-edit-modal">
+			<div class="modalContent screen-center">
+				<input class="w-80 input" id="edit-input" autocomplete="off" name="replyContent">
+				<input class="reply-no-hidden" type="number" type="number" hidden="hidden" readonly>
+				<button id="edit-complete" class="btn btn-positive" type="button">수정</button>
+				<button class="btn reply-delete-btn" type="button">취소</button>
 			</div>
 		</div>
 	</div>
 	<script>
 		$(function(){
 			replyListLoad();
+			currentLikeState();
+			currentSaveState();
+			likeCount();
 			
+			// 댓글 작성,수정 중 취소버튼 누를시 입력창 초기화
 			$(".reply-delete-btn").click(function(){
+				$("#reply-edit-modal").fadeOut(100);
 				$("input[name=replyContent]").val("");
 			});
 			
+			// 댓글 등록
 			$(".reply-add-btn").click(function(){
 				const boardNo = $("input[name=boardNo]").val();
 				const replyContent = $("input[name=replyContent]").val();
@@ -208,13 +226,27 @@
 				});
 			});
 			
+			// 댓글 갯수 조회
+			function replyCount() {
+				const boardNo = $("input[name=boardNo]").val();
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/reply/count/" + boardNo,
+					method:"get",
+					success: function(resp) {
+						$(".reply-count").text(resp.cnt);
+					}
+				});
+			}
+			
+			// 댓글 목록 조회
 			function replyListLoad() {
-				$(".reply-list").empty();
+				
 				const boardNo = $("input[name=boardNo]").val();
 				$.ajax({
 					url:"${contextPage.request.contextPath}/rest/reply/list/"+ boardNo,
 					method:"get",
 					success:function(resp){
+						$(".reply-list").empty();
 						for(var i = 0; i < resp.length; i++) {
 							const div1 = $("<div>").addClass("flex-parent mt-30");
 							const div2 = $("<div>").addClass("inline-block profile-box");
@@ -238,7 +270,7 @@
 							
 							if(resp[i].memberNick == "${loginNick}") {
 								const div7 = $("<div>").addClass("text-right font-15");
-								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit").text("수정");
+								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit me-10").text("수정");
 								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete").text("삭제");
 								const div8 = div7.append(replyEdit).append(replyDelete).append(replyNo);
 								const div9 = div1.append(div8);
@@ -248,29 +280,152 @@
 				});
 			}
 			
-			function replyCount() {
+			// 작성자가 댓글 삭제 버튼을 누를 시 삭제
+			$(document).on("click", ".reply-delete", function() {
+				const replyNo = $(this).next("input").val();
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/reply/delete/" + replyNo,
+					method:"delete",
+					success: function(){
+						replyListLoad();
+					}
+				});
+			});
+			
+			// 댓글 수정 클릭시 인풋창 생성
+			$(document).on("click", ".reply-edit", function(){
+				const currentReply = $(this).parent(".text-right").prev("div").find(".reply-content").text();
+				const replyNoData = $(this).nextAll(".reply-no").val();
+				const boardNo = $("input[name=boardNo]").val();
+				$(".reply-no-hidden").val(replyNoData);
+				$("#edit-input").val(currentReply);
+				$("#reply-edit-modal").fadeIn(100);
+				
+				// 댓글 수정
+				$("#edit-complete").click(function(){
+					const replyContent = $("#edit-input").val();
+					const replyNo = $(".reply-no-hidden").val();
+					if(replyContent.length == 0) {
+						alert("댓글을 입력하세요.");
+						return;
+					}
+					const data = {
+							replyContent:replyContent,
+							replyNo:replyNo,
+							boardNo:boardNo
+							}
+					console.log(data);
+					
+					$.ajax({
+						url:"${contextPage.request.contextPath}/rest/reply/edit",
+						method:"put",
+						contentType:"application/json",
+						data:JSON.stringify(data),
+						success: function(resp) {
+							$("#reply-edit-modal").fadeOut(100);
+							replyListLoad();
+						}
+					});
+				});
+			});
+			
+			// 좋아요 갯수 조회
+			function likeCount() {
 				const boardNo = $("input[name=boardNo]").val();
 				$.ajax({
-					url:"${contextPage.request.contextPath}/rest/reply/count/" + boardNo,
+					url:"${contextPage.request.contextPath}/rest/like/count/" + boardNo,
 					method:"get",
 					success: function(resp) {
-						$(".reply-count").text(resp.cnt);
+						$(".like-count").text(resp.cnt);
 					}
 				});
 			}
 			
-	          $(document).on("click", ".reply-delete", function() {
-	              const replyNo = $(this).next("input").val();
-	              console.log(replyNo);
-	              $.ajax({
-	            	 url:"${contextPage.request.contextPath}/rest/reply/delete/" + replyNo,
-	            	 method:"delete",
-	            	 success: function(){
-	            		 replyListLoad();
-	            	 }
-	              });
-	          });
+			// 세션의 좋아요 상태 조회
+			function currentLikeState() {
+				const boardNo = $("input[name=boardNo]").val();
+				const data = {boardNo:boardNo};
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/like/view",
+					method:"post",
+					contentType:"application/json",
+					data:JSON.stringify(data),
+					success: function(resp) {
+						if(resp == true) {
+							$(".like-btn").addClass("fa-regular fa-heart");
+						} else {
+							$(".like-btn").addClass("fa-solid fa-heart").css("color", "#B20000");
+						}
+					}
+				});
+			};
 			
+			// 좋아요
+			$(".like-btn").click(function(){
+				const boardNo = $("input[name=boardNo]").val();
+				const data = {boardNo:boardNo};
+				if(!${login}) {
+					alert("로그인이 필요합니다.");
+					return;
+				}			
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/like/check",
+					method:"post",
+					contentType:"application/json",
+					data:JSON.stringify(data),
+					success: function(resp) {
+						if(resp == "like") {
+							$(".like-btn").removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart").css("color", "#B20000");
+							likeCount();
+						} else {
+							$(".like-btn").removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart").css("color", "#757575");
+							likeCount();
+						}
+					}	
+				});
+			});
+			
+			// 세션의 북마크 상태 조회
+			function currentSaveState() {
+				const boardNo = $("input[name=boardNo]").val();
+				const data = {boardNo:boardNo};
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/save/view",
+					method:"post",
+					contentType:"application/json",
+					data:JSON.stringify(data),
+					success: function(resp) {
+						if(resp == true) {
+							$(".save-btn").addClass("fa-regular fa-bookmark");
+						} else {
+							$(".save-btn").addClass("fa-solid fa-bookmark");
+						}
+					}
+				});
+			};
+			
+			// 북마크
+			$(".save-btn").click(function(){
+				const boardNo = $("input[name=boardNo]").val();
+				const data = {boardNo:boardNo};
+				if(!${login}) {
+					alert("로그인이 필요합니다.");
+					return;
+				}			
+				$.ajax({
+					url:"${contextPage.request.contextPath}/rest/save/check",
+					method:"post",
+					contentType:"application/json",
+					data:JSON.stringify(data),
+					success: function(resp) {
+						if(resp == "save") {
+							$(".save-btn").removeClass("fa-regular fa-bookmark").addClass("fa-solid fa-bookmark");
+						} else {
+							$(".save-btn").removeClass("fa-solid fa-bookmark").addClass("fa-regular fa-bookmark");
+						}
+					}	
+				});
+			});
 		});
 	</script>	
 </body>

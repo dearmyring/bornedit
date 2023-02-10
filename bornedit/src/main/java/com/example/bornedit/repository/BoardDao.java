@@ -10,4 +10,9 @@ public interface BoardDao {
 	void write(BoardDto boardDto);
 	BoardDto selectOneBoard(int boardNo);
 	List<BoardDetailVO> detail(int boardNo);
+	boolean incrementViewCount(int boardNo);
+	boolean incrementLikeCount(int boardNo);
+	boolean decrementLikeCount(int boardNo);
+	boolean incrementSaveCount(int boardNo);
+	boolean decrementSaveCount(int boardNo);
 }

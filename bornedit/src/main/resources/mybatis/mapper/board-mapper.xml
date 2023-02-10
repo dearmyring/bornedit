@@ -135,4 +135,23 @@
 				B.board_no = #{boardNo}
 	</select>
 	
+	<update id="incrementViewCount" parameterType="int">
+		update board set board_view = board_view + 1 where board_no = #{boardNo}
+	</update>
+	
+	<update id="incrementLikeCount" parameterType="int">
+		update board set board_like = board_like + 1 where board_no = #{boardNo}
+	</update>
+	
+	<update id="decrementLikeCount" parameterType="int">
+		update board set board_like = board_like - 1 where board_no = #{boardNo}
+	</update>
+	
+	<update id="incrementSaveCount" parameterType="int">
+		update board set board_save = board_save + 1 where board_no = #{boardNo}
+	</update>
+	
+	<update id="decrementSaveCount" parameterType="int">
+		update board set board_save = board_save - 1 where board_no = #{boardNo}
+	</update>
 </mapper>
