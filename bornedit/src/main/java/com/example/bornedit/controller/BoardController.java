@@ -171,5 +171,9 @@ public class BoardController {
 		return "board/detail2";
 	}
 	
-	
+	@GetMapping("/delete")
+	public String delete(@RequestParam int boardNo) {
+		boardDao.delete(boardNo);
+		return "home";
+	}
 }

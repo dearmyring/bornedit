@@ -8,6 +8,7 @@ import com.example.bornedit.vo.BoardDetailVO;
 public interface BoardDao {
 	int sequence();
 	void write(BoardDto boardDto);
+	boolean delete(int boardNo);
 	BoardDto selectOneBoard(int boardNo);
 	List<BoardDetailVO> detail(int boardNo);
 	boolean incrementViewCount(int boardNo);

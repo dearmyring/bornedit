@@ -13,9 +13,15 @@
 						<source src="${contextPage.request.contextPath}/rest/download/${content.boardVideoDetail.attachmentNo}">
 					</video>
 				</div>
-				<div class="mt-30">
-					<h1>${content.boardDetail.boardTitle}</h1>
+				<div class="flex-parent mt-30 space-around">
+					<div class="flex-editAndDelete">
+						<h1>${content.boardDetail.boardTitle}</h1>
+					</div>
 					<c:if test="${loginId == content.boardDetail.memberEmail}">
+						<div class="flex-editAndDelete">
+							<a href="#" class="btn btn-edit">수정</a>
+							<a href="delete?boardNo=${content.boardDetail.boardNo}" class="btn btn-delete">삭제</a>
+						</div>
 					</c:if>
 				</div>
 				<div class="flex-parent mt-30">
@@ -269,9 +275,9 @@
 							replyCount();
 							
 							if(resp[i].memberNick == "${loginNick}") {
-								const div7 = $("<div>").addClass("text-right font-15");
-								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit me-10").text("수정");
-								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete").text("삭제");
+								const div7 = $("<div>").addClass("text-right font-15 flex-parent flex-end");
+								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit").text("수정");
+								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete ms-10").text("삭제");
 								const div8 = div7.append(replyEdit).append(replyDelete).append(replyNo);
 								const div9 = div1.append(div8);
 							}

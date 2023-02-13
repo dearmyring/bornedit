@@ -21,6 +21,12 @@ public class BoardDaoImpl implements BoardDao{
 	}
 	
 	@Override
+	public boolean delete(int boardNo) {
+		int result = sqlSession.delete("board.delete", boardNo);
+		return result > 0;
+	}
+	
+	@Override
 	public void write(BoardDto boardDto) {
 		sqlSession.insert("board.write", boardDto);
 	}
