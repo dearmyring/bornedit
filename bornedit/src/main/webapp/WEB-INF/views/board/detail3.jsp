@@ -275,7 +275,7 @@
 							replyCount();
 							
 							if(resp[i].memberNick == "${loginNick}") {
-								const div7 = $("<div>").addClass("text-right font-15");
+								const div7 = $("<div>").addClass("text-right font-15 flex-parent flex-end");
 								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit").text("수정");
 								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete ms-10").text("삭제");
 								const div8 = div7.append(replyEdit).append(replyDelete).append(replyNo);
