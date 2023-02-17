@@ -3,11 +3,11 @@
 <jsp:include page="/WEB-INF/views/template/header.jsp">
 	<jsp:param value="BORNEDIT" name="title"/>
 </jsp:include>
-	<div class="container-1500 mb-50 ">
-		<div class="top-menu mt-30 flex align-center space-around ">
+	<div class="container-1500 mb-50">
+		<div class="top-menu mt-30 flex align-center space-around">
 			<div class="">
 				<div class="inline-block font-20 font-weight-700 me-20">
-					<a href="${contextPage.request.contextPath}/">
+					<a href="${contextPage.request.contextPath}/">	
 						<i class="fa-regular fa-clock me-5"></i>최근
 					</a>
 				</div>
@@ -28,19 +28,19 @@
 			<div class="row-warp" id="clone-parent">
 				<div class="list-box inline-block mb-50" id="clone-child">
 					<div class="list-video-box top">
-						<a href="${contextPage.request.contextPath}/board/detail?boardNo={{boardNo}}">
-							<video class="w-100 video-size">
-								<source class="video-no" src="${contextPage.request.contextPath}/video/11.mp4">
+						<a class="link-to-detail">
+							<video class="w-100 video-size" onmouseover="this.play()" onmouseout="this.pause()">
+								<source class="video-no">
 							</video>
 						</a>
 					</div>
 					<div class="video-title">
-						<a href="${contextPage.request.contextPath}/board/detail?boardNo={{boardNo}}">
-							{{videoTitle}}
+						<a class="link-to-detail">
+							<!-- jQuery로 동적 추가 -->
 						</a>
 					</div>
 					<div class="video-content ">
-						{{videoContent}}
+						<!-- jQuery로 동적 추가 -->
 					</div>
 					<div class="use-equipment">
 						-
@@ -54,12 +54,14 @@
 								by
 							</div>
 							<div class="font-weight-500 board-nick inline-block">
-								{{memberNick}}
+								<!-- jQuery로 동적 추가 -->
 							</div>
 						</div>
 						<div class="flex align-center ">
 							<i class="fa-solid fa-heart"></i>
-							<span class="ms-10 board-like">{{boardLike}}</span>
+							<span class="ms-10 board-like">
+								<!-- jQuery로 동적 추가 -->
+							</span>
 						</div>
 					</div>
 				</div>
@@ -67,33 +69,151 @@
 		</div>
 	</div>
 	<script>
+		// 무한 스크롤
+	    const $doc = $(document);    
+	    const $win = $(window);
+	    
+		// 페이지
+		let p = 1;
+		
+		// 보여줄 리스트 개수
+		let size = 16;
+		
+		let endRow = p * size;
+		let startRow = endRow - (size - 1);
+		
 		$(function(){
+			// 첫 목록 호출
 			loadList();
-			$("#clone-child").hide();			
 			
+			// 찍어논 html 태그 숨김
+			$("#clone-child").hide();
+			
+			// 첫 로딩시 16개 조회
 			function loadList(){
+				let data = {
+						startRow : startRow,
+						endRow : endRow
+						}
 				$.ajax({
 					url:"${contextPage.request.contextPath}/rest/home/list",
+					method:"post",
+					contentType:"application/json",
+					data:JSON.stringify(data),
 					success: function(resp) {
 						for(let i = 0; i < resp.length; i++){
-							let clone = $("#clone-child").clone().addClass("data-" + i).appendTo("#clone-parent");
-							$(".data-" + i).show();
-							$(".data-" + i).children(".list-video-box").find(".video-no").attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.videoNo);
-							$(".data-" + i).children(".video-title").text(resp[i].homeList.boardTitle);
-							$(".data-" + i).children(".video-content").text(resp[i].homeList.boardContent);
+							let clone = $("#clone-child").clone()
+															.addClass("data-" + resp[i].homeList.rn)
+															.appendTo("#clone-parent");
+							$(".data-" + resp[i].homeList.rn).show();
+							
+							$(".data-" + resp[i].homeList.rn).children(".list-video-box")
+												.children(".link-to-detail")
+												.attr("href", "${contextPage.request.contextPath}/board/detail?boardNo=" + resp[i].homeList.boardNo);
+							
+							$(".data-" + resp[i].homeList.rn).children(".list-video-box")
+												.find(".video-no")
+												.attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.videoNo);
+							
+							$(".data-" + resp[i].homeList.rn).children(".video-title")
+												.children(".link-to-detail")
+												.attr("href", "${contextPage.request.contextPath}/board/detail?boardNo=" + resp[i].homeList.boardNo)
+												.text(resp[i].homeList.boardTitle);
+							
+							$(".data-" + resp[i].homeList.rn).children(".video-content")
+												.text(resp[i].homeList.boardContent);
+							
 							if(resp[i].homeList.profileNo > 0) {
-								$(".data-" + i).children(".nick-like").children(".flex").find(".main-profile-img").attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.profileNo);
+								$(".data-" + resp[i].homeList.rn).children(".nick-like")
+												.children(".flex")
+												.find(".main-profile-img")
+												.attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.profileNo);
 							} 
-							$(".data-" + i).children(".nick-like").children(".flex").children(".board-nick").text(resp[i].homeList.memberNick);
-							$(".data-" + i).children(".nick-like").children(".flex").children(".board-like").text(resp[i].homeList.boardLike);
+							
+							$(".data-" + resp[i].homeList.rn).children(".nick-like")
+												.children(".flex")
+												.children(".board-nick")
+												.text(resp[i].homeList.memberNick);
+							
+							$(".data-" + resp[i].homeList.rn).children(".nick-like")
+												.children(".flex")
+												.children(".board-like")
+												.text(resp[i].homeList.boardLike);
 							
 							for(let j = 0; j < resp[i].lensDetail.length; j++) {
-								$(".data-" + i).children(".use-equipment").text(resp[i].lensDetail[j].lensName);
+								$(".data-" + resp[i].homeList.rn).children(".use-equipment")
+												.text(resp[i].lensDetail[j].lensName);
 							}
 						}
 					}
 				});
 			};
+			$(window).scroll(function(){ 
+				if ($doc.height() - $win.height() -$(this).scrollTop() == 0) {
+					
+					p++;
+					let endRow = p * size;
+					let startRow = endRow - (size - 1);
+					
+					let data = {
+							startRow : startRow,
+							endRow : endRow
+							}
+					
+					$.ajax({
+						url:"${contextPage.request.contextPath}/rest/home/list",
+						method:"post",
+						contentType:"application/json",
+						data:JSON.stringify(data),
+						success: function(resp) {
+							for(let i = 0; i < resp.length; i++){
+								let clone = $("#clone-child").clone()
+																.addClass("data-" + resp[i].homeList.rn)
+																.appendTo("#clone-parent");
+								$(".data-" + resp[i].homeList.rn).show();
+								
+								$(".data-" + resp[i].homeList.rn).children(".list-video-box")
+													.children(".link-to-detail")
+													.attr("href", "${contextPage.request.contextPath}/board/detail?boardNo=" + resp[i].homeList.boardNo);
+								
+								$(".data-" + resp[i].homeList.rn).children(".list-video-box")
+													.find(".video-no")
+													.attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.videoNo);
+								
+								$(".data-" + resp[i].homeList.rn).children(".video-title")
+													.children(".link-to-detail")
+													.attr("href", "${contextPage.request.contextPath}/board/detail?boardNo=" + resp[i].homeList.boardNo)
+													.text(resp[i].homeList.boardTitle);
+								
+								$(".data-" + resp[i].homeList.rn).children(".video-content")
+													.text(resp[i].homeList.boardContent);
+								
+								if(resp[i].homeList.profileNo > 0) {
+									$(".data-" + resp[i].homeList.rn).children(".nick-like")
+													.children(".flex")
+													.find(".main-profile-img")
+													.attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.profileNo);
+								} 
+								
+								$(".data-" + resp[i].homeList.rn).children(".nick-like")
+													.children(".flex")
+													.children(".board-nick")
+													.text(resp[i].homeList.memberNick);
+								
+								$(".data-" + resp[i].homeList.rn).children(".nick-like")
+													.children(".flex")
+													.children(".board-like")
+													.text(resp[i].homeList.boardLike);
+								
+								for(let j = 0; j < resp[i].lensDetail.length; j++) {
+									$(".data-" + resp[i].homeList.rn).children(".use-equipment")
+													.text(resp[i].lensDetail[j].lensName);
+								}
+							}
+						}
+					});
+				}
+			});
 			
 		});	
 	</script>

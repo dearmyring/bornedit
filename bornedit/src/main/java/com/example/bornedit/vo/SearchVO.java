@@ -9,7 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class HomeListVO {
-	private int boardNo, profileNo, boardLike, videoNo, rn;
-	private String boardTitle, memberNick, boardContent;
+public class SearchVO {
+	private int startRow;
+	private int endRow;
+	private String sort, keyword;
 }

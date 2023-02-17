@@ -62,6 +62,12 @@
 						}
 					});
 				});
+				
+				$(".fa-magnifying-glass").click(function(){
+					$("html, body").animate({scrollTop : 0}, 400);
+					$(".search-input").slideToggle(600);
+				});
+				
 	    	});
 	    </script>
 		<title>BORNEDIT</title>
@@ -77,7 +83,7 @@
 						<c:when test="${login}">
 							<div class="header-align-center">
 								<div class="inline-block ms-20">
-									<i class="fa-solid fa-magnifying-glass font-20"></i>
+									<i class="fa-solid fa-magnifying-glass font-20 cursor-pointer"></i>
 								</div>
 								<div class="inline-block ms-20">
 									<i class="fa-regular fa-bell font-20"></i>
@@ -117,6 +123,13 @@
 							</div>
 						</c:otherwise>
 					</c:choose>
+				</div>
+				<div class="search-input flex space-around align-center w-50 center" style="display:none;">
+					<i class="fa-solid fa-magnifying-glass"></i>
+					<input class="w-85 search-input-bar" placeholder="검색어를 입력하세요." autocomplete="off">
+					<button class="btn reply-delete-btn btn-list-submit" type="button">
+						<i class="fa-solid fa-right-long" style="color: white;"></i>
+					</button>
 				</div>
 			</div>
 		</header>

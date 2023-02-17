@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.example.bornedit.vo.HomeListTotalVO;
+import com.example.bornedit.vo.SearchVO;
 
 @Repository
 public class HomeDaoImpl implements HomeDao{
@@ -14,7 +15,7 @@ public class HomeDaoImpl implements HomeDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public List<HomeListTotalVO> list() {
-		return sqlSession.selectList("home.list");
+	public List<HomeListTotalVO> list(SearchVO searchVO) {
+		return sqlSession.selectList("home.list", searchVO);
 	}
 }
