@@ -110,6 +110,9 @@ public class MemberController {
 	@GetMapping("/mypage")
 	public String mypage(Model model, HttpSession session) {
 		String memberId = (String) session.getAttribute(SessionConstant.ID);
+		if(memberId == null) {
+			return "redirect:login";
+		}
 		
 		model.addAttribute("nickAndEmail", memberDao.selectOndId(memberId));
 		model.addAttribute("attachmentDto", attachmentDao.selectProfileImg(memberId));

@@ -20,11 +20,5 @@
 			<div class="mt-10 font-15 mypage-email">${nickAndEmail.memberEmail}</div>
 		</div>
 	</div>
-	
-	<script>
-		 $(function(){
-			 
-	     });
-	</script>
 </body>
 </html>

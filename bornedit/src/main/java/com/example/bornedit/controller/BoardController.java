@@ -168,7 +168,7 @@ public class BoardController {
 		model.addAttribute("replyDto", replyDao.selectReply(boardNo));
 		model.addAttribute("selectOneBoard", boardDao.selectOneBoard(boardNo));
 		model.addAttribute("boardDto", boardDao.detail(boardNo));
-		return "board/detail2";
+		return "board/detail3";
 	}
 	
 	@GetMapping("/delete")

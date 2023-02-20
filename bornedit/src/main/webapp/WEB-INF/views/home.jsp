@@ -84,6 +84,7 @@
 			// 첫 목록 호출
 			loadList();
 			
+			
 			// 찍어논 html 태그 숨김
 			$("#clone-child").hide();
 			

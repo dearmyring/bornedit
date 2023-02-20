@@ -255,14 +255,14 @@
 						$(".reply-list").empty();
 						for(var i = 0; i < resp.length; i++) {
 							const div1 = $("<div>").addClass("flex-parent mt-30");
-							const div2 = $("<div>").addClass("inline-block profile-box");
+							const div2 = $("<div>").addClass("inline-block profile-box item-1");
 							if(resp[i].attachmentNo > 0) {
 								var img = $("<img>").addClass("reply-profile-img").attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].attachmentNo);
 							} else {
 								var img = $("<img>").addClass("reply-profile-img").attr("src", "${contextPage.request.contextPath}/image/basicProfileImage.png");
 							}
 							const replyMemberProfile = div2.append(img);
-							const div3 = $("<div>").addClass("flex-col");
+							const div3 = $("<div>").addClass("flex-col item-2");
 							const div4 = $("<div>").addClass("ms-10 mb-5");
 							const nick = $("<span>").addClass("font-15 reply-nick me-5").text(resp[i].memberNick);
 							const when = $("<span>").addClass("font-12 reply-when").css("color", "#757575").text(resp[i].replyWhen);
@@ -275,7 +275,7 @@
 							replyCount();
 							
 							if(resp[i].memberNick == "${loginNick}") {
-								const div7 = $("<div>").addClass("text-right font-15 flex-parent flex-end");
+								const div7 = $("<div>").addClass("font-15 item-3");
 								const replyEdit = $("<span>").addClass("cursor-pointer reply-edit").text("수정");
 								const replyDelete = $("<span>").addClass("cursor-pointer reply-delete ms-10").text("삭제");
 								const div8 = div7.append(replyEdit).append(replyDelete).append(replyNo);

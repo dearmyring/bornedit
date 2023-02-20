@@ -405,6 +405,10 @@ input:focus {
 	justify-content: flex-end;
 }
 
+.flex-start {
+	justify-content: flex-start;
+}
+
 .flex {
 	display: flex;
 }
@@ -685,7 +689,9 @@ textarea {
 	border-bottom: 2px solid black;
 }
 
-
+.item-1{flex-grow:0; flex-shrink: 0;}
+.item-2{flex-grow:1; flex-shrink: 1;}
+.item-3{flex-grow:0; flex-shrink: 0;}
 
 
 
