@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HomeListVO {
 	private int boardNo, profileNo, boardLike, videoNo, rn;
-	private String boardTitle, memberNick, boardContent;
+	private String boardTitle, memberNick, boardContent, memberEmail;
 }

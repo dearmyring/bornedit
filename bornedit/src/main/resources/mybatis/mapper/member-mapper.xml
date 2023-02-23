@@ -36,4 +36,134 @@
 		where 
 			member_email = #{memberEmail}
 	</update>
+	
+	<!-- 마이페이지 -->
+	
+	<!-- 하위 테이블 계층형 조회 단일 쿼리문 -->
+	<select id="bodyDetail" parameterType="int" resultType="BodyDto">
+		select * from body where board_no = #{boardNo}
+	</select>
+	
+	<select id="lensDetail" parameterType="int" resultType="LensDto">
+		select * from lens where board_no = #{boardNo}
+	</select>
+	
+	<select id="rightDetail" parameterType="int" resultType="RightDto">
+		select * from right where board_no = #{boardNo}
+	</select>
+	
+	<select id="tripodDetail" parameterType="int" resultType="TripodDto">
+		select * from tripod where board_no = #{boardNo}
+	</select>
+	
+	<select id="audioDetail" parameterType="int" resultType="AudioDto">
+		select * from audio where board_no = #{boardNo}
+	</select>
+	
+	<select id="monitorDetail" parameterType="int" resultType="MonitorDto">
+		select * from monitor where board_no = #{boardNo}
+	</select>
+	
+	<select id="etcDetail" parameterType="int" resultType="EtcDto">
+		select * from etc where board_no = #{boardNo}
+	</select>
+	
+	<resultMap type="HomeListTotalVO" id="homeList">
+		<association property="homeList">
+			<result column="board_no" property="boardNo"/>
+			<result column="profile_no" property="profileNo"/>
+			<result column="board_like" property="boardLike"/>
+			<result column="video_no" property="videoNo"/>
+			<result column="rn" property="rn"/>
+			<result column="board_title" property="boardTitle"/>
+			<result column="member_nick" property="memberNick"/>
+			<result column="board_content" property="boardContent"/>
+			<result column="member_email" property="memberEmail"/>
+		</association>
+		<collection property="bodyDetail" javaType="java.util.List" ofType="BodyDto" column="board_no" select="bodyDetail">
+			<result column="body_no" property="bodyNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="body_name" property="bodyName"/>
+		</collection>
+		
+		<collection property="lensDetail" javaType="java.util.List" ofType="LensDto" column="board_no" select="lensDetail">
+			<result column="lens_no" property="lensNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="lens_name" property="lensName"/>
+		</collection>
+		
+		<collection property="rightDetail" javaType="java.util.List" ofType="RightDto" column="board_no" select="rightDetail">
+			<result column="right_no" property="rightNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="right_name" property="rightName"/>
+		</collection>
+		
+		<collection property="tripodDetail" javaType="java.util.List" ofType="TripodDto" column="board_no" select="tripodDetail">
+			<result column="tripod_no" property="tripodNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="tripod_name" property="tripodName"/>
+		</collection>
+		
+		<collection property="audioDetail" javaType="java.util.List" ofType="AudioDto" column="board_no" select="audioDetail">
+			<result column="audio_no" property="audioNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="audio_name" property="audioName"/>
+		</collection>
+		
+		<collection property="monitorDetail" javaType="java.util.List" ofType="MonitorDto" column="board_no" select="monitorDetail">
+			<result column="monitor_no" property="monitorNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="monitor_name" property="monitorName"/>
+		</collection>
+		
+		<collection property="etcDetail" javaType="java.util.List" ofType="EtcDto" column="board_no" select="etcDetail">
+			<result column="etc_no" property="etcNo"/>
+			<result column="board_no" property="boardNo"/>
+			<result column="etc_name" property="etcName"/>
+		</collection>
+	</resultMap>
+	
+	<!-- 내가 쓴 글 -->
+	<select id="whatIWroteByEmail" parameterType="String" resultMap="homeList">
+		select * from complex_list where member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 쓴 글 카운트 -->
+	<select id="howManyWhatIWrote" parameterType="String" resultType="int">
+		select count(*) from complex_list where member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 좋아요한 글 -->
+	<select id="whatIDoLike" parameterType="String" resultMap="homeList">
+		select C.* from complex_list C inner join board_like B on C.board_no = B.board_no where B.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 좋아요한 글 카운트 -->
+	<select id="howManyWhatIDoLike" parameterType="String" resultType="int">
+		select count(*) from complex_list C inner join board_like B on C.board_no = B.board_no where B.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 댓글 단 글 -->
+	<select id="wroteComment" parameterType="String" resultMap="homeList">
+		select distinct C.* from complex_list C inner join reply R on C.board_no = R.board_no where R.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 댓글 카운트 -->
+	<select id="commentCount" parameterType="String" resultType="int">
+		select count(*) from complex_list C inner join reply R on C.board_no = R.board_no where R.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 저장한 글 -->
+	<select id="whatIDoSave" parameterType="String" resultMap="homeList">
+		select C.* from complex_list C inner join board_save B on C.board_no = B.board_no where B.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 내가 저장한 글 카운트 -->
+	<select id="howManyWhatIDoSaveCount" parameterType="String" resultType="int">
+		select count(*) from complex_list C inner join board_save B on C.board_no = B.board_no where B.member_email = #{memberEmail}
+	</select>
+	
+	<!-- 타유저 프로필 보기 -->
+	
+	
 </mapper>

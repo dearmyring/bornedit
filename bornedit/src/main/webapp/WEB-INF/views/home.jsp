@@ -26,10 +26,10 @@
 		
 		<div class="w-100 mt-40 flex">
 			<div class="row-warp" id="clone-parent">
-				<div class="list-box inline-block mb-50" id="clone-child">
+				<div class="list-box inline-block" id="clone-child">
 					<div class="list-video-box top">
 						<a class="link-to-detail">
-							<video class="w-100 video-size" onmouseover="this.play()" onmouseout="this.pause()">
+							<video class="w-100 video-size" onmouseover="this.play()" onmouseout="this.pause()" muted>
 								<source class="video-no">
 							</video>
 						</a>
@@ -48,13 +48,17 @@
 					<div class="bottom-box flex align-center space-around nick-like">
 						<div class="flex align-center">
 							<div class="list-profile-box inline-block ">
-								<img class="main-profile-img" src="/image/basicProfileImage.png">
+								<a class="throw-info">
+									<img class="main-profile-img" src="/image/basicProfileImage.png">
+								</a>
 							</div>
 							<div class="ms-5 me-5 font-12 inline-block" style="color:#33333354">
 								by
 							</div>
 							<div class="font-weight-500 board-nick inline-block">
-								<!-- jQuery로 동적 추가 -->
+								<a class="throw-info">
+									<!-- jQuery로 동적 추가 -->
+								</a>
 							</div>
 						</div>
 						<div class="flex align-center ">

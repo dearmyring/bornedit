@@ -26,17 +26,23 @@
 				</div>
 				<div class="flex-parent mt-30">
 					<div class="inline-block profile-box">
-						<c:choose>
-							<c:when test="${content.boardDetail.attachmentNo > 0}">
-								<img class="detail-profile-img" src="${contextPage.request.contextPath}/rest/download/${content.boardDetail.attachmentNo}">	
-							</c:when>
-							<c:otherwise>
-								<img class="detail-profile-img" src="${contextPage.request.contextPath}/image/basicProfileImage.png">
-							</c:otherwise>
-						</c:choose>
+						<a href="${contextPage.request.contextPath}/member/profile?memberEmail=${content.boardDetail.memberEmail}">
+							<c:choose>
+								<c:when test="${content.boardDetail.attachmentNo > 0}">
+									<img class="detail-profile-img" src="${contextPage.request.contextPath}/rest/download/${content.boardDetail.attachmentNo}">	
+								</c:when>
+								<c:otherwise>
+									<img class="detail-profile-img" src="${contextPage.request.contextPath}/image/basicProfileImage.png">
+								</c:otherwise>
+							</c:choose>
+						</a>
 					</div>
 					<div class="flex-col">
-						<div class="ms-10 font-20 mb-5">${content.boardDetail.memberNick}</div>
+						<div class="ms-10 font-20 mb-5">
+							<a href="${contextPage.request.contextPath}/member/profile?memberEmail=${content.boardDetail.memberEmail}">
+								${content.boardDetail.memberNick}
+							</a>
+						</div>
 						<div class="inline-block font-15 ms-10" style="color: #757575;">
 							${content.boardDetail.boardWhen} 조회수 ${content.boardDetail.boardView}
 						</div>

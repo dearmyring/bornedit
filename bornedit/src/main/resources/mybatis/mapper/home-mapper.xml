@@ -4,6 +4,7 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="home">
+
 	<!-- 하위 테이블 계층형 조회 단일 쿼리문 -->
 	<select id="bodyDetail" parameterType="int" resultType="BodyDto">
 		select * from body where board_no = #{boardNo}
@@ -43,6 +44,7 @@
 			<result column="board_title" property="boardTitle"/>
 			<result column="member_nick" property="memberNick"/>
 			<result column="board_content" property="boardContent"/>
+			<result column="member_email" property="memberEmail"/>
 		</association>
 		<collection property="bodyDetail" javaType="java.util.List" ofType="BodyDto" column="board_no" select="bodyDetail">
 			<result column="body_no" property="bodyNo"/>

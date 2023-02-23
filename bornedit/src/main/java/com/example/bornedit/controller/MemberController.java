@@ -113,10 +113,40 @@ public class MemberController {
 		if(memberId == null) {
 			return "redirect:login";
 		}
+		// 내가 쓴 글
+		model.addAttribute("list", memberDao.whatIWrote(memberId));
+		model.addAttribute("listCount", memberDao.howManyWhatIWrote(memberId));
+		
+		// 내가 좋아요한 글
+		model.addAttribute("listForLike", memberDao.whatIDoLike(memberId));
+		model.addAttribute("listForLikeCount", memberDao.howManyWhatIDoLike(memberId));
+		
+		// 내가 댓글을 작성한 글
+		model.addAttribute("listForComment", memberDao.wroteComment(memberId));
+		model.addAttribute("listForCommentCount", memberDao.commentCount(memberId));
+		
+		// 내가 저장한 글
+		model.addAttribute("listForSave", memberDao.whatIDoSave(memberId));
+		model.addAttribute("listForSaveCount", memberDao.howManyWhatIDoSaveCount(memberId));
 		
 		model.addAttribute("nickAndEmail", memberDao.selectOndId(memberId));
 		model.addAttribute("attachmentDto", attachmentDao.selectProfileImg(memberId));
+		
 		return "member/mypage";
+	}
+	
+	@GetMapping("/profile")
+	public String profile(Model model, HttpSession session, @RequestParam String memberEmail) {
+		String loginId = (String) session.getAttribute(SessionConstant.ID);
+		model.addAttribute("list", memberDao.whatIWrote(memberEmail));
+		model.addAttribute("listCount", memberDao.howManyWhatIWrote(memberEmail));
+		model.addAttribute("userInfo", memberDao.selectOndId(memberEmail));
+		model.addAttribute("attachmentDto", attachmentDao.selectProfileImg(memberEmail));
+		if(memberEmail.equals(loginId)) {
+			return "redirect:mypage";
+		}
+		return "member/profile";
+		
 	}
 	
 	@GetMapping("/edit_myinfo")

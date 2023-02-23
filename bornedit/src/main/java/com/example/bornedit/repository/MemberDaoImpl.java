@@ -1,11 +1,14 @@
 package com.example.bornedit.repository;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.example.bornedit.entity.MemberDto;
+import com.example.bornedit.vo.HomeListTotalVO;
 
 @Repository
 public class MemberDaoImpl implements MemberDao{
@@ -60,5 +63,49 @@ public class MemberDaoImpl implements MemberDao{
 		memberDto.setMemberPw(enc);
 		int count = sqlSession.update("member.editInfo", memberDto);
 		return count > 0;
+	}
+	
+	@Override
+	public List<HomeListTotalVO> whatIWrote(String memberEmail) {
+		return sqlSession.selectList("member.whatIWroteByEmail",memberEmail);
+	}
+	
+	@Override
+	public int howManyWhatIWrote(String memberEmail) {
+		int result = sqlSession.selectOne("member.howManyWhatIWrote", memberEmail);
+		return result;
+	}
+	
+	@Override
+	public List<HomeListTotalVO> whatIDoLike(String memberEmail) {
+		return sqlSession.selectList("member.whatIDoLike", memberEmail);
+	}
+	
+	@Override
+	public int howManyWhatIDoLike(String memberEmail) {
+		int result = sqlSession.selectOne("member.howManyWhatIDoLike", memberEmail);
+		return result;
+	}
+	
+	@Override
+	public List<HomeListTotalVO> wroteComment(String memberEmail) {
+		return sqlSession.selectList("member.wroteComment", memberEmail);
+	}
+	
+	@Override
+	public int commentCount(String memberEmail) {
+		int result = sqlSession.selectOne("member.commentCount", memberEmail);
+		return result;
+	}
+	
+	@Override
+	public List<HomeListTotalVO> whatIDoSave(String memberEmail) {
+		return sqlSession.selectList("member.whatIDoSave", memberEmail);
+	}
+	
+	@Override
+	public int howManyWhatIDoSaveCount(String memberEmail) {
+		int result = sqlSession.selectOne("member.howManyWhatIDoSaveCount", memberEmail);
+		return result;
 	}
 }

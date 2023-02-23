@@ -33,6 +33,7 @@ public class BoardSaveRestController {
 	@PostMapping("/save/check")
 	public String save(@RequestBody BoardSaveDto boardSaveDto, HttpSession session) {
 		String memberId = (String) session.getAttribute(SessionConstant.ID);
+		
 		boardSaveDto.setMemberEmail(memberId);
 		boolean judge = boardSaveDao.check(boardSaveDto);
 		if(judge) {
