@@ -31,11 +31,13 @@ import com.example.bornedit.repository.AudioDao;
 import com.example.bornedit.repository.BoardDao;
 import com.example.bornedit.repository.BodyDao;
 import com.example.bornedit.repository.EtcDao;
+import com.example.bornedit.repository.HomeDao;
 import com.example.bornedit.repository.LensDao;
 import com.example.bornedit.repository.MonitorDao;
 import com.example.bornedit.repository.ReplyDao;
 import com.example.bornedit.repository.RightDao;
 import com.example.bornedit.repository.TripodDao;
+import com.example.bornedit.vo.SearchVO;
 
 @Controller
 @RequestMapping("/board")
@@ -71,6 +73,9 @@ public class BoardController {
 	
 	@Autowired
 	private ReplyDao replyDao;
+	
+	@Autowired
+	private HomeDao homeDao;
 	
 	
 	@GetMapping("/write")
@@ -176,4 +181,11 @@ public class BoardController {
 		boardDao.delete(boardNo);
 		return "home";
 	}
+	
+	@GetMapping("/search")
+	public String search(@ModelAttribute SearchVO searchVO, Model model) {
+		model.addAttribute("list", homeDao.list(searchVO));
+		return "board/search";
+	}
+	
 }

@@ -93,11 +93,12 @@
 	<select id="list" parameterType="SearchVO" resultMap="homeList">
 		select * from(
 		    select TMP.*, rownum rn from (
-		        select * from complex_list order by board_no desc
+		        select * from complex_list 
+		        <if test="keyword != null">
+		        	where instr(board_title, #{keyword}) > 0
+		        </if>
+		        order by board_no desc
 		    )TMP
 		) where rn between #{startRow} and #{endRow}
-			<if test="sort != null">
-				, #{sort}
-			</if>
 	</select>
 </mapper>

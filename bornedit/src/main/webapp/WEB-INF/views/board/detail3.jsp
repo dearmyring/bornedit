@@ -300,6 +300,7 @@
 					method:"delete",
 					success: function(){
 						replyListLoad();
+						replyCount();
 					}
 				});
 			});

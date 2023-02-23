@@ -197,7 +197,6 @@
 
 .header {
 	height: 70px;
-	width:1500px;
 	/*position:fixed;*/
 	display: flex;
 	justify-content: space-between;

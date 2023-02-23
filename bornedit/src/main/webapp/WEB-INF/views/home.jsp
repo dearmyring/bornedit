@@ -4,7 +4,7 @@
 	<jsp:param value="BORNEDIT" name="title"/>
 </jsp:include>
 	<div class="container-1500 mb-50">
-		<div class="top-menu mt-30 flex align-center space-around ">
+		<div class="top-menu mt-30 flex align-center space-around">
 			<div class="">
 				<div class="inline-block font-20 font-weight-700 me-20 present-select">
 					<i class="fa-regular fa-clock me-5"></i>최근
@@ -136,11 +136,17 @@
 												.children(".flex")
 												.find(".main-profile-img")
 												.attr("src", "${contextPage.request.contextPath}/rest/download/" + resp[i].homeList.profileNo);
-							} 
+							}
+							
+							$(".data-" + resp[i].homeList.rn).children(".nick-like")
+												.children(".flex")
+												.find(".throw-info")
+												.attr("href", "${contextPage.request.contextPath}/member/profile?memberEmail=" + resp[i].homeList.memberEmail);
 							
 							$(".data-" + resp[i].homeList.rn).children(".nick-like")
 												.children(".flex")
 												.children(".board-nick")
+												.children(".throw-info")
 												.text(resp[i].homeList.memberNick);
 							
 							$(".data-" + resp[i].homeList.rn).children(".nick-like")
