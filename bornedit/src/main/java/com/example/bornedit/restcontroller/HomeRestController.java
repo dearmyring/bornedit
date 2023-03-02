@@ -20,9 +20,12 @@ public class HomeRestController {
 	private HomeDao homeDao;
 	
 	@PostMapping("/home/list")
-	public List<HomeListTotalVO> list(
-			@RequestBody SearchVO searchVO
-			) {
+	public List<HomeListTotalVO> list(@RequestBody SearchVO searchVO) {
 		return homeDao.list(searchVO);
+	}
+	
+	@PostMapping("/home/popular/list")
+	public List<HomeListTotalVO> popularList(@RequestBody SearchVO seachVO) {
+		return homeDao.popularList(seachVO);
 	}
 }

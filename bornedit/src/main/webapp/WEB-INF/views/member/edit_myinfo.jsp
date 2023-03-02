@@ -16,17 +16,6 @@
 		</div>
 		<div class="mt-20 container-500">
 			<form class="join-form" action="edit_myinfo" method="post">
-				<div class="mt-50">
-					<div class="mt-30 mb-10"><h3>비밀번호</h3></div>
-					<label class="mb-5 helper-text" for="member-pw">8~16글자, 특수문자 !@#$를 포함해서 입력해 주세요.</label>
-					<input class="w-100 member-pw input mt-5" name="memberPw" type="password" placeholder="비밀번호를 입력하세요.">
-					<div class="mt-5 help-text"></div>
-				</div>
-				<div class="mt-40">
-					<div class="mt-30 mb-10"><h3>비밀번호 확인</h3></div>
-					<input class="w-100 pw-check input mt-5" type="password" placeholder="비밀번호를 확인하세요.">
-					<div class="mt-5 help-text"></div>
-				</div>
 				<div class="mt-40">
 					<div class="mt-30 mb-10"><h3>닉네임</h3></div>
 					<label class="mb-5 helper-text">영문, 한글, 숫자 10자 이내로 입력해주세요.</label>
@@ -67,7 +56,8 @@
 					</div>
 					<div class="mt-5 help-text"></div>
 				</div>
-				<button type="submit" class="w-100 mb-10 mt-50 btn btn-positive cursor-pointer">수정 완료</button>
+				<a class="w-100 mb-10 mt-30 btn btn-negertive cursor-pointer text-center" href="#">비밀번호 변경</a>
+				<button type="submit" class="w-100 mb-10 mt-10 btn btn-positive cursor-pointer">수정 완료</button>
 				<div class="join-fail text-center"></div>
 			</form>
 		</div>

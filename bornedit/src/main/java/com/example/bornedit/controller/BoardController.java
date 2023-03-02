@@ -183,9 +183,14 @@ public class BoardController {
 	}
 	
 	@GetMapping("/search")
-	public String search(@ModelAttribute SearchVO searchVO, Model model) {
-		model.addAttribute("list", homeDao.list(searchVO));
+	public String search() {
 		return "board/search";
+	}
+	
+	@GetMapping("/search/result")
+	public String searchForresult(Model model, @ModelAttribute SearchVO searchVO) {
+		model.addAttribute("list", homeDao.list(searchVO));
+		return "board/result";
 	}
 	
 }

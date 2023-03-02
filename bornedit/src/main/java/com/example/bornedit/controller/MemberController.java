@@ -161,11 +161,10 @@ public class MemberController {
 		String memberId = (String) session.getAttribute(SessionConstant.ID);
 		inputDto.setMemberEmail(memberId);
 		boolean result = memberDao.editInfo(inputDto);
-		System.out.println(result);
-		System.out.println(inputDto);
 		if(result) {
 			return "redirect:mypage";
 		}
 		return null;
 	}
+	
 }

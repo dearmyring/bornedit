@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @Builder
 public class SearchVO {
-	private int startRow;
-	private int endRow;
+	private int startRow = 1;
+	private int endRow = 16;
 	private String sort, keyword;
 }

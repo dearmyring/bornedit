@@ -87,7 +87,6 @@
 			<result column="board_no" property="boardNo"/>
 			<result column="etc_name" property="etcName"/>
 		</collection>
-		
 	</resultMap>
 	
 	<select id="list" parameterType="SearchVO" resultMap="homeList">
@@ -101,4 +100,16 @@
 		    )TMP
 		) where rn between #{startRow} and #{endRow}
 	</select>
+	
+	<select id="popularList" parameterType="SearchVO" resultMap="homeList">
+		select * from(
+		    select TMP.*, rownum rn from (
+		        select * from complex_list 
+		        <if test="keyword != null">
+		        	where instr(board_title, #{keyword}) > 0
+		        </if>
+		        order by board_no asc
+		    )TMP
+		) where rn between #{startRow} and #{endRow}
+ 	</select>
 </mapper>

@@ -24,6 +24,9 @@ public interface MemberDao {
 	// 내 정보 변경
 	boolean editInfo(MemberDto memberDto);
 	
+	// 마이페이지 로그인 상태에서 비밀번호 변경
+	boolean loginEditPw(MemberDto memberDto);
+	
 	// 내가 쓴 글 & 카운트
 	List<HomeListTotalVO> whatIWrote(String memberEmail);
 	int howManyWhatIWrote(String memberEmail);
@@ -39,4 +42,5 @@ public interface MemberDao {
 	// 내가 저장한 글
 	List<HomeListTotalVO> whatIDoSave(String memberEmail);
 	int howManyWhatIDoSaveCount(String memberEmail);
+	
 }

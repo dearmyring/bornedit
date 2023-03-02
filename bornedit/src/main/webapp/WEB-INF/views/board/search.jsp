@@ -6,7 +6,7 @@
 	<jsp:param value="회원가입" name="title"/>
 </jsp:include>
 	<div class="container-1500">
-		<form action="search" method="get">
+		<form action="search/result" method="get">
 			<div class="search-input flex space-around align-center w-50 center">
 				<i class="fa-solid fa-magnifying-glass"></i>
 				<input class="w-85 search-input-bar" name="keyword" placeholder="검색어를 입력하세요." autocomplete="off">

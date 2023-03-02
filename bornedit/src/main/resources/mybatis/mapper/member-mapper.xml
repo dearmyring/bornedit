@@ -29,7 +29,6 @@
 	
 	<update id="editInfo" parameterType="MemberDto">
 		update member set 
-			member_pw = #{memberPw}, 
 			member_nick = #{memberNick}, 
 			member_introduce = #{memberIntroduce}, 
 			member_offer = #{memberOffer}
@@ -37,7 +36,13 @@
 			member_email = #{memberEmail}
 	</update>
 	
-	<!-- 마이페이지 -->
+	<!-- 마이페이지 비밀번호 변경 -->
+	<update id="loginEditPw" parameterType="MemberDto">
+		update member set
+			member_pw = #{memberPw}
+		where member_email = #{memberEmail}
+	</update>
+	
 	
 	<!-- 하위 테이블 계층형 조회 단일 쿼리문 -->
 	<select id="bodyDetail" parameterType="int" resultType="BodyDto">

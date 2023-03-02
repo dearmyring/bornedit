@@ -230,6 +230,10 @@
 	position: relative;
 }
 
+.mypage-profile-box:hover {
+	opacity: 70%;	
+}
+
 .header-profile-img,
 .detail-profile-img,
 .reply-profile-img,

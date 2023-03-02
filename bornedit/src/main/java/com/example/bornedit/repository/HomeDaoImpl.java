@@ -18,4 +18,8 @@ public class HomeDaoImpl implements HomeDao{
 	public List<HomeListTotalVO> list(SearchVO searchVO) {
 		return sqlSession.selectList("home.list", searchVO);
 	}
+	@Override
+	public List<HomeListTotalVO> popularList(SearchVO searchVO) {
+		return sqlSession.selectList("home.popularList", searchVO);
+	}
 }

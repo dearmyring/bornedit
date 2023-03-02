@@ -58,11 +58,17 @@ public class MemberDaoImpl implements MemberDao{
 	
 	@Override
 	public boolean editInfo(MemberDto memberDto) {
-		String memberPw = memberDto.getMemberPw();
-		String enc = encoder.encode(memberPw);
-		memberDto.setMemberPw(enc);
 		int count = sqlSession.update("member.editInfo", memberDto);
 		return count > 0;
+	}
+	
+	@Override
+	public boolean loginEditPw(MemberDto memberDto) {
+		String memberPw = memberDto.getMemberPw();
+		String enc2 = encoder.encode(memberPw);
+		memberDto.setMemberPw(enc2);
+		int result = sqlSession.update("member.loginEditPw", memberDto);
+		return result > 0;
 	}
 	
 	@Override
