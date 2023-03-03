@@ -12,7 +12,7 @@
 * OS
   * macOS Big Sur 11.6
 * 개발 도구
-  * Spring Tool Suite4, SQL Developer
+  * Spring Tool Suite4, SQL Developer, My batis
 * 개발 언어
   * Java 11, Java Script ES6, CSS3, HTML5
 * DBMS
